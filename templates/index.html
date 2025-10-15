@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♻️ Waste Management Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>♻️ Waste Management & Recycling Predictor</h1>
+        <p>Enter the details below to estimate the <b>Recycling Rate (%)</b> for your city.</p>
+
+        <form action="/predict" method="post" class="form">
+
+            <!-- City Dropdown -->
+            <div class="form-group">
+                <label>City / District:</label>
+                <select name="city" required>
+                    <option value="">Select City</option>
+                    <option>Mumbai</option><option>Delhi</option><option>Bengaluru</option>
+                    <option>Chennai</option><option>Kolkata</option><option>Hyderabad</option>
+                    <option>Pune</option><option>Ahmedabad</option><option>Jaipur</option>
+                    <option>Lucknow</option><option>Surat</option><option>Kanpur</option>
+                    <option>Nagpur</option><option>Patna</option><option>Bhopal</option>
+                    <option>Thiruvananthapuram</option><option>Indore</option><option>Vadodara</option>
+                    <option>Guwahati</option><option>Coimbatore</option><option>Ranchi</option>
+                    <option>Amritsar</option><option>Jodhpur</option><option>Varanasi</option>
+                    <option>Ludhiana</option><option>Agra</option><option>Meerut</option>
+                    <option>Nashik</option><option>Rajkot</option><option>Madurai</option>
+                    <option>Jabalpur</option><option>Allahabad</option><option>Visakhapatnam</option>
+                    <option>Gwalior</option>
+                </select>
+            </div>
+
+            <!-- Waste Type -->
+            <div class="form-group">
+                <label>Waste Type:</label>
+                <select name="waste_type" required>
+                    <option value="">Select Waste Type</option>
+                    <option>Plastic</option>
+                    <option>Organic</option>
+                    <option>E-Waste</option>
+                    <option>Construction</option>
+                    <option>Hazardous</option>
+                </select>
+            </div>
+
+            <!-- Disposal Method -->
+            <div class="form-group">
+                <label>Disposal Method:</label>
+                <select name="disposal_method" required>
+                    <option value="">Select Disposal Method</option>
+                    <option>Composting</option>
+                    <option>Incineration</option>
+                    <option>Landfill</option>
+                    <option>Recycling</option>
+                </select>
+            </div>
+
+            <!-- Landfill Name -->
+            <div class="form-group">
+                <label>Landfill Name:</label>
+                <select name="landfill_name" required>
+                    <option value="">Select Landfill</option>
+                    <option>Mumbai Landfill</option><option>Delhi Landfill</option><option>Bengaluru Landfill</option>
+                    <option>Chennai Landfill</option><option>Kolkata Landfill</option><option>Hyderabad Landfill</option>
+                    <option>Pune Landfill</option><option>Ahmedabad Landfill</option><option>Jaipur Landfill</option>
+                    <option>Lucknow Landfill</option><option>Surat Landfill</option><option>Kanpur Landfill</option>
+                    <option>Nagpur Landfill</option><option>Patna Landfill</option><option>Bhopal Landfill</option>
+                    <option>Thiruvananthapuram Landfill</option><option>Indore Landfill</option><option>Vadodara Landfill</option>
+                    <option>Guwahati Landfill</option><option>Coimbatore Landfill</option><option>Ranchi Landfill</option>
+                    <option>Amritsar Landfill</option><option>Jodhpur Landfill</option><option>Varanasi Landfill</option>
+                    <option>Ludhiana Landfill</option><option>Agra Landfill</option><option>Meerut Landfill</option>
+                    <option>Nashik Landfill</option><option>Rajkot Landfill</option><option>Madurai Landfill</option>
+                    <option>Jabalpur Landfill</option><option>Allahabad Landfill</option><option>Visakhapatnam Landfill</option>
+                    <option>Gwalior Landfill</option>
+                </select>
+            </div>
+
+            <!-- Latitude & Longitude -->
+            <div class="form-group">
+                <label>Landfill Latitude:</label>
+                <input type="number" name="latitude" step="0.000001" required>
+            </div>
+
+            <div class="form-group">
+                <label>Landfill Longitude:</label>
+                <input type="number" name="longitude" step="0.000001" required>
+            </div>
+
+            <!-- Numeric Inputs -->
+            <div class="form-group">
+                <label>Waste Generated (Tons/Day):</label>
+                <input type="number" name="waste_generated" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Population Density (People/km²):</label>
+                <input type="number" name="population_density" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Municipal Efficiency (1-10):</label>
+                <input type="number" name="municipal_efficiency" min="1" max="10" required>
+            </div>
+
+            <div class="form-group">
+                <label>Cost of Waste Management (₹/Ton):</label>
+                <input type="number" name="cost" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Awareness Campaigns Count:</label>
+                <input type="number" name="campaigns" required>
+            </div>
+
+            <div class="form-group">
+                <label>Landfill Capacity (Tons):</label>
+                <input type="number" name="landfill_capacity" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Year:</label>
+                <input type="number" name="year" required>
+            </div>
+
+            <button type="submit">Predict Recycling Rate</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="result">
+                <h2>{{ prediction_text }}</h2>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
